@@ -27,7 +27,7 @@ jobs:
       shell: bash
       run: |
         echo "runner.os == Windows......."
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
       with:
         submodules: 'recursive'
     - uses: seanmiddleditch/gha-setup-ninja@master
@@ -43,7 +43,7 @@ jobs:
       shell: bash
       run: |
         cd build && ninja
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v4
       with:
         name: aseprite
         path: |
