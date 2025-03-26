@@ -82,7 +82,7 @@ jobs:
         cd build && ninja
     - uses: actions/upload-artifact@v4
       with:
-        name: aseprite
+        name: aseprite-${{ runner.os }}
         path: |
           build/bin/data
           build/bin/aseprite.exe
