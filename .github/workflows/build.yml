@@ -6,7 +6,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, macos-latest]
+        os: [macos-latest]
         build_type: [Release]
         ui: [gui]
         scripting: [lua]
@@ -85,4 +85,4 @@ jobs:
         name: aseprite-${{ runner.os }}
         path: |
           build/bin/data
-          build/bin/aseprite.exe
+          build/bin/aseprite
