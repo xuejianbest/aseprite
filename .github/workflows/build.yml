@@ -1,0 +1,51 @@
+name: build
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest]
+        build_type: [Release]
+        enable_ui: [on]
+        include:
+          - os: windows-latest
+            build_type: Release
+            enable_ui: on
+    steps:
+    - name: Debug Matrix Variables
+      shell: bash
+      run: |
+        echo "OS: ${{ matrix.os }}"
+        echo "runner.os: ${{ runner.os }}"
+        echo "Build Type: ${{ matrix.build_type }}"
+        echo "UI: ${{ matrix.ui }}"
+        echo "Scripting: ${{ matrix.scripting }}"
+    - name: Debug2
+      if: runner.os == 'Windows'
+      shell: bash
+      run: |
+        echo "runner.os == Windows......."
+    - uses: actions/checkout@v2
+      with:
+        submodules: 'recursive'
+    - uses: seanmiddleditch/gha-setup-ninja@master
+    - uses: ilammy/msvc-dev-cmd@v1
+      if: runner.os == 'Windows'
+    - name: Generating Makefiles
+      shell: bash
+      run: |
+        cmake -S . -B build -G Ninja \
+          -DOPENSSL_USE_STATIC_LIBS=TRUE \
+          -DENABLE_UI=${{ matrix.enable_ui }}
+    - name: Compiling
+      shell: bash
+      run: |
+        cd build && ninja
+    - uses: actions/upload-artifact@v2
+      with:
+        name: aseprite
+        path: |
+          build/bin/data
+          build/bin/aseprite.exe
